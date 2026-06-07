@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>工作时间记录器 — 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="container">
+    <header class="page-head">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <span class="brand-text">工时记录</span>
+      </div>
+      <h1 class="page-title">设置</h1>
+      <p class="page-sub">配置写入哪个 sheet（按你的名字匹配 tab）和 Web App 地址。</p>
+    </header>
+
+    <section class="card">
+      <div class="field">
+        <label class="label" for="userName">你的名字</label>
+        <input id="userName" class="input" type="text" placeholder="例如：张三" />
+        <div class="hint">用来选择写入的 sheet（tab）。表格底部要有一个 tab 名 = 这里填的名字。</div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="webAppUrl">Google Apps Script Web App 地址</label>
+        <input id="webAppUrl" class="input" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+        <div class="hint">部署 Apps Script 后获得的 <code>/exec</code> 结尾地址。</div>
+      </div>
+
+      <div class="actions">
+        <button id="testBtn" class="btn btn-ghost">测试连接</button>
+        <button id="saveBtn" class="btn btn-primary">保存设置</button>
+      </div>
+      <div id="status" class="status hidden"></div>
+    </section>
+
+    <section class="card help">
+      <h2 class="help-title">表格结构</h2>
+      <p class="help-text">每个名字对应一个 tab，每个 tab 三列：</p>
+      <table class="schema">
+        <thead><tr><th>A 列</th><th>B 列</th><th>C 列</th></tr></thead>
+        <tbody>
+          <tr><td>日期</td><td>时间汇总</td><td>主要内容</td></tr>
+          <tr class="example">
+            <td>2026-05-10</td>
+            <td>80分钟</td>
+            <td>08:00-09:00 清理电脑<br>10:00-10:20 调试网络</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="help-text">同一天的多条记录会合并到同一行。第二列分钟数会自动重算。</p>
+
+      <h2 class="help-title">如何获取 Web App 地址</h2>
+      <ol class="steps">
+        <li>打开你要写入的 Google Sheet。</li>
+        <li>菜单 <b>扩展程序 → Apps Script</b>。</li>
+        <li>清空默认代码，粘贴项目里 <code>Code.gs</code> 的内容，保存。</li>
+        <li><b>Deploy → New deployment</b>，齿轮选 <b>Web app</b>。</li>
+        <li>"Execute as" 选 <b>Me</b>；"Who has access" 选 <b>Anyone</b>。</li>
+        <li>授权后复制 <code>/exec</code> 结尾的 URL。</li>
+      </ol>
+      <p class="help-note">改了 <code>Code.gs</code> 后必须 <b>Manage deployments → ✏️ → New version</b> 重新部署才生效。</p>
+    </section>
+  </main>
+
+  <script src="options.js"></script>
+</body>
+</html>

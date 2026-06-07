@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>工作时间记录器</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <span class="brand-text">工时记录</span>
+      </div>
+      <button id="settingsBtn" class="icon-btn" title="设置">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <!-- 没有设置时 -->
+    <section id="setupNeeded" class="card hidden">
+      <div class="setup-icon">⚙</div>
+      <h2 class="setup-title">需要先完成设置</h2>
+      <p class="setup-desc">请先填写你的名字和 Web App 地址。</p>
+      <button id="goSettings" class="btn btn-primary btn-block">前往设置</button>
+    </section>
+
+    <!-- 空闲：可填新内容 -->
+    <section id="idleView" class="card hidden">
+      <div class="row date-row">
+        <label class="label">日期</label>
+        <input id="dateInput" type="date" class="input input-date" />
+      </div>
+
+      <div class="tabs">
+        <button id="tabTimer" class="tab active" data-tab="timer">计时</button>
+        <button id="tabManual" class="tab" data-tab="manual">手动</button>
+      </div>
+
+      <!-- 计时模式 -->
+      <div id="timerPanel" class="panel">
+        <label class="label" for="timerContent">工作内容</label>
+        <textarea id="timerContent" class="input" rows="3" placeholder="例如：清理电脑"></textarea>
+        <button id="startBtn" class="btn btn-primary btn-block">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          开始计时
+        </button>
+      </div>
+
+      <!-- 手动模式 -->
+      <div id="manualPanel" class="panel hidden">
+        <div class="time-pair">
+          <div class="time-col">
+            <label class="label" for="manualStart">开始</label>
+            <input id="manualStart" type="time" class="input" />
+          </div>
+          <div class="time-col">
+            <label class="label" for="manualEnd">结束</label>
+            <input id="manualEnd" type="time" class="input" />
+          </div>
+        </div>
+        <label class="label" for="manualContent">工作内容</label>
+        <textarea id="manualContent" class="input" rows="3" placeholder="例如：调试网络"></textarea>
+        <button id="manualSubmitBtn" class="btn btn-primary btn-block">
+          直接添加
+        </button>
+      </div>
+
+      <div class="who" id="whoLine">记录到 sheet：<span id="userName">—</span></div>
+    </section>
+
+    <!-- 计时进行中 -->
+    <section id="runningView" class="card hidden">
+      <div class="running-label">正在进行</div>
+      <div id="runningTask" class="running-task">—</div>
+
+      <div class="meta-row">
+        <span class="meta-cap">日期</span>
+        <span id="runningDate" class="meta-val">—</span>
+      </div>
+
+      <div class="timer-row">
+        <div class="timer-block">
+          <div class="timer-cap">开始</div>
+          <div id="startTimeDisplay" class="timer-val">—</div>
+        </div>
+        <div class="timer-divider"></div>
+        <div class="timer-block">
+          <div class="timer-cap">已用</div>
+          <div id="elapsedDisplay" class="timer-val">00:00</div>
+        </div>
+      </div>
+
+      <button id="stopBtn" class="btn btn-danger btn-block">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+        结束并提交
+      </button>
+      <button id="cancelBtn" class="btn-text">取消本次记录</button>
+    </section>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
